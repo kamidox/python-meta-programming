@@ -13,7 +13,9 @@ class lazy_property(object):
         print('{0}.{1} ENTER'.format(self.__class__.__name__, '__get__'))
         if obj is None:
             return self
+        # This is the key of lazy init. It call the function to get a value.
         value = self._deferred(obj)
+        # Then, set the value to obj's property with exactly the same name of the init function.
         setattr(obj, self._deferred.__name__, value)
         print('{0}.{1} EXIT'.format(self.__class__.__name__, '__get__'))
         return value
@@ -24,12 +26,9 @@ class Signal(object):
 
     @lazy_property
     def receiver_connected(self):
-        """Emitted after each :meth:`connect`.
+        """ Define a lazy init property
 
-        The signal sender is the signal instance, and the :meth:`connect`
-        arguments are passed through: *receiver*, *sender*, and *weak*.
-
-        .. versionadded:: 1.2
+        This is defined as a function. After init, it become a property.
 
         """
         print('{0}.{1} ENTER'.format(self.__class__.__name__, 'receiver_connected'))
